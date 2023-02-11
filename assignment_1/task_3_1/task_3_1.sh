@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #Task 1
-
 if [ $# != 1 ]; then
     echo "You need to pass in one argument, no more or less."
     exit
