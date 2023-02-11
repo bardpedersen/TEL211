@@ -2,15 +2,15 @@
 
 #Task 1
 
-read -p "Wich file with (directory) do you want to read" dir
-
 if [ $# != 1 ]; then
     echo "You need to pass in one argument, no more or less."
     exit
 fi
 
+a=($(wc $@))
+lines=${a[0]}
+words=${a[1]}
+characters=${a[2]}
+name=${a[3]}
 
-characters=3
-words=0
-lines=0
-echo "The file testfile.txt contains ""$characters"" characters, ""$words"" words and ""$lines"" lines"
+echo "The file ""$name"" contains ""$characters"" characters, ""$words"" words and ""$lines"" lines"
