@@ -7,7 +7,7 @@ Calculate_volum() {
         echo "You need to pass in three argument: height, width, length."
         exit
     fi
-    number=$(( "$1"*"$2"*"$3" ))
+    number=$(($1*$2*$3))
     echo "The volume of the cube is ""$number"
 
 }

@@ -4,5 +4,5 @@
 number=0
 for i in $@; do
     echo "$i""$number"
-    number=$(( "$number"+5 ))
+    number=$(($number+5))
 done
