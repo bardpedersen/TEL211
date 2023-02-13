@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Task 1
-document_value_1="magician who have lost their magic"
+document_value_1="magician who have lost their magic?"
 
 #Task 2
 document_value_2="Ian"
@@ -26,8 +26,8 @@ tar -xf some_files.tar.gz
 
 #Task 8
 cp some_files/*.txt "$user""_directory"/"$user""_documents"
-cp some_files/*.png "$user""_directory"/"$user""_music"
-cp some_files/*.wav "$user""_directory"/"$user""_pictures"
+cp some_files/*.wav "$user""_directory"/"$user""_music"
+cp some_files/*.png "$user""_directory"/"$user""_pictures"
 
 #Task 9
 cat "$user""_directory"/"$user""_documents"/*.txt
