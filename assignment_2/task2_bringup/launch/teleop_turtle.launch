@@ -1,0 +1,7 @@
+<launch>
+    <!-- My Package launch file -->
+    <node pkg="turtlesim" type="turtlesim_node" name="turtlesim_node"/>
+
+    <node pkg="imrt_virtual_joy" type="virtual_gamepad" name="virtual_gamepad"/>
+    <node pkg="imrt_teleop" type="imrt_teleop" name="imrt_teleop"/>
+</launch>

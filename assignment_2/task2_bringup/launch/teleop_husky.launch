@@ -1,0 +1,6 @@
+<launch>
+    <!-- My Package launch file -->
+    <include file="$(find task2_simulator)/launch/world_bringup.launch"/>
+    <include file="$(find imrt_teleop)/launch/imrt_teleop_launch.launch"/>
+    <node pkg="imrt_virtual_joy" type="virtual_gamepad" name="virtual_gamepad"/>
+</launch>

@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+
+import rospy
+from sensor_msgs.msg import Joy
+from geometry_msgs.msg import Twist
+
+
+def callback(msg):
+
+    lin_max = 0.7
+    ang_max = 0.9
+    speed_forward = msg.axes[0]*lin_max
+    speed_rotating = -(msg.axes[-1]*ang_max)
+    move.linear.x = speed_forward
+    move.angular.z = speed_rotating
+    pub.publish(move)
+
+rospy.init_node("imrt_teleop")
+
+sub = rospy.Subscriber("/Joy", Joy, callback)
+pub = rospy.Publisher("/husky_velocity_controller/cmd_vel", Twist, queue_size=1)
+move = Twist()
+
+rospy.spin()
