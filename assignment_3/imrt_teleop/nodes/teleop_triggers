@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+
+import rospy
+from sensor_msgs.msg import Joy
+from geometry_msgs.msg import Twist
+from std_srvs.srv import Trigger, TriggerResponse
+
+def callback(msg):
+
+    lin_max = 0.7
+    ang_max = 0.9
+    speed_forward = msg.axes[0]*lin_max
+    speed_rotating = -(msg.axes[-1]*ang_max)
+    move.linear.x = speed_forward
+    move.angular.z = speed_rotating
+    pub.publish(move)
+
+    if msg.buttons[0]:
+        s1()
+    if msg.buttons[1]:
+        s2()
+    if msg.buttons[2]:
+        s3()
+
+rospy.init_node("teleop_triggers")
+string_cmd = rospy.get_param("/wich_cmd_vel")
+sub = rospy.Subscriber("/Joy", Joy, callback)
+pub = rospy.Publisher(string_cmd, Twist, queue_size=1)
+s1 = rospy.ServiceProxy("/teleop/button1_trigger", Trigger)
+s2 = rospy.ServiceProxy("/teleop/button2_trigger", Trigger)
+s3 = rospy.ServiceProxy("/teleop/button3_trigger", Trigger)
+move = Twist()
+rospy.spin()

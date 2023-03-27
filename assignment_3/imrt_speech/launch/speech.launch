@@ -1,0 +1,4 @@
+<launch>
+    <rosparam file="$(find imrt_speech)/config/phrases.yaml"/>
+    <node name="text_to_speech" pkg="imrt_speech" type="text_to_speech.py" output="screen"/>
+</launch>

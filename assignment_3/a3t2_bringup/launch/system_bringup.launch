@@ -1,0 +1,15 @@
+<launch>
+    <!-- My Package launch file -->
+    <include file="$(find robthrow_gazebo)/launch/robthrow_gazebo.launch"/>
+    <include file="$(find task2_simulator)/launch/spawn_husky.launch"/>
+    <include file="$(find imrt_speech)/launch/speech.launch"/>
+    
+    <remap from="/teleop/button1_trigger" to="/robot_thrower/throw"/>
+    <remap from="/teleop/button2_trigger" to="/robot_thrower/reload"/>
+    <remap from="/teleop/button3_trigger" to="/text_to_speech/say_random"/>
+
+    <param name="wich_cmd_vel" value="/husky_velocity_controller/cmd_vel" />
+
+    <node pkg="imrt_virtual_joy" type="virtual_gamepad" name="virtual_gamepad"/>
+    <node pkg="imrt_teleop" type="teleop_triggers" name="teleop_triggers"/>
+</launch>
