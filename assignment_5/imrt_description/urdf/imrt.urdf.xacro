@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="imrt_robot">
+
+<xacro:arg name="robot_namespace" default="" />
+<xacro:property name="wheel_radius" value="0.075" />
+<xacro:property name="wheel_thicknes" value="0.027" />
+<xacro:property name="wheel_offset" value="0.168" />
+<xacro:property name="base_link_collision_height" value="0.225" />
+<xacro:property name="base_link_collision_height_half" value="0.1125" />
+<xacro:property name="base_link_collision_radius" value="0.1975" />
+<xacro:property name="base_inertya_Ixy" value="0.04650625" />
+<xacro:property name="base_inertya_Iz" value="0.0780125" />
+<xacro:property name="base_inertya_Mass" value="4" />
+<xacro:property name="wheel_inertya_Mass" value="0.5" />
+<xacro:property name="wheel_inertya_Ixy" value="0.0007335" />
+<xacro:property name="wheel_inertya_Iz" value="0.00140625" />
+
+
+<xacro:include filename="$(find imrt_description)/urdf/range_sensor.urdf.xacro" />
+<xacro:add_range_sensor sensor_name="rangesens_1" sensor_xyz="0.16 -0.11 0.091" sensor_rpy="0.0 0.0 0.0"/>
+<xacro:add_range_sensor sensor_name="rangesens_2" sensor_xyz="0.16 0.11 0.091" sensor_rpy="0.0 0.0 0.0"/>
+<xacro:add_range_sensor sensor_name="rangesens_3" sensor_xyz="0.11 0.16 0.091" sensor_rpy="0.0 0.0 ${pi/2}"/>
+<xacro:add_range_sensor sensor_name="rangesens_4" sensor_xyz="-0.11 0.16 0.091" sensor_rpy="0.0 0.0 ${pi/2}"/>
+
+
+<material name="white" >
+<color rgba="1 1 1 1" />
+</material>
+
+<material name="black" >
+<color rgba="0 0 0 1" />
+</material>
+
+<gazebo>
+ <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+  <robotNamespace>$(arg robot_namespace)</robotNamespace>
+ </plugin>
+</gazebo>
+
+
+<link name="base_link">
+<visual>
+    <origin rpy="0 0 0" xyz="0 0 ${wheel_radius}"/>
+    <geometry>
+    <mesh filename="package://imrt_description/meshes/imrt_base_mesh.dae"/>
+    </geometry>
+    <material name="white"/>
+</visual>
+<collision>
+    <geometry>
+    <cylinder radius="${base_link_collision_radius}" length="${base_link_collision_height}"/>
+    </geometry>
+    <origin xyz="0 0 ${base_link_collision_height_half}" rpy="0 0 0"/>
+</collision>
+</link>
+
+
+<link name="inertial_link">
+<inertial>
+    <mass value="${base_inertya_Mass}" />
+    <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" />
+    <inertia ixx="${base_inertya_Ixy}" ixy="0" ixz="0" iyy="${base_inertya_Ixy}" iyz="0" izz="${base_inertya_Iz}" />
+</inertial>
+</link>
+
+
+<joint name="base_inertia" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="inertial_link" />
+</joint>
+
+
+<gazebo reference="base_link">
+ <mu1 value="0.0" />
+ <mu2 value="0.0" />
+ <kp value="1000000.0" />
+ <kd value="1.0" />
+</gazebo>
+
+
+<link name="left_wheel_link">
+<visual>
+    <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+    <geometry>
+    <cylinder radius="${wheel_radius}" length="${wheel_thicknes}"/>
+    </geometry>
+    <material name="black"/>
+</visual>
+<collision>
+    <geometry>
+    <cylinder radius="${wheel_radius}" length="${wheel_thicknes}"/>
+    </geometry>
+    <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+</collision>
+<inertial>
+    <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+    <mass value="${wheel_inertya_Mass}" />
+    <inertia ixx="${wheel_inertya_Ixy}" ixy="0" ixz="0" iyy="${wheel_inertya_Ixy}" iyz="0" izz="${wheel_inertya_Iz}" />
+</inertial>
+</link>
+
+<gazebo reference="left_wheel_link">
+ <mu1 value="1.0" />
+ <mu2 value="1.0" />
+ <kp value="1000000.0" />
+ <kd value="1.0" />
+ <material value="Gazebo/Black"/>
+</gazebo>
+
+<joint name="left_wheel_joint" type="continuous">
+ <parent link="base_link" />
+  <child link="left_wheel_link" />
+  <axis xyz="0 1 0" />
+ <origin rpy="0 0 0" xyz="0 ${wheel_offset} ${wheel_radius}"/>
+</joint>
+
+<transmission name="simple_trans1">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="left_wheel_joint">
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="left_wheel_joint">
+    <mechanicalReduction>1</mechanicalReduction>
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
+
+
+<link name="right_wheel_link">
+<visual>
+    <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+    <geometry>
+    <cylinder radius="${wheel_radius}" length="${wheel_thicknes}"/>
+    </geometry>
+    <material name="black"/>
+</visual>
+<collision>
+    <geometry>
+    <cylinder radius="${wheel_radius}" length="${wheel_thicknes}"/>
+    </geometry>
+    <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+</collision>
+<inertial>
+    <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+    <mass value="${wheel_inertya_Mass}" />
+    <inertia ixx="${wheel_inertya_Ixy}" ixy="0" ixz="0" iyy="${wheel_inertya_Ixy}" iyz="0" izz="${wheel_inertya_Iz}" />
+</inertial>
+</link>
+
+<gazebo reference="right_wheel_link">
+ <mu1 value="1.0" />
+ <mu2 value="1.0" />
+ <kp value="1000000.0" />
+ <kd value="1.0" />
+ <material value="Gazebo/Black"/>
+</gazebo>
+
+<joint name="right_wheel_joint" type="continuous">
+ <parent link="base_link" />
+  <child link="right_wheel_link" />
+  <axis xyz="0 1 0" />
+ <origin rpy="0 0 0" xyz="0 -${wheel_offset} ${wheel_radius}"/>
+</joint>
+
+<transmission name="simple_trans2">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="right_wheel_joint">
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="right_wheel_joint">
+    <mechanicalReduction>1</mechanicalReduction>
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
+
+</robot>

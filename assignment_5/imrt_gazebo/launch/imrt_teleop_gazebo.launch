@@ -1,0 +1,8 @@
+<launch>
+
+    <include file="$(find imrt_gazebo)/launch/imrt_empty_world.launch" />
+    <param name="wich_cmd_vel" value="/imrt_velocity_controller/cmd_vel"/>
+    <node pkg="imrt_virtual_joy" type="virtual_gamepad" name="virtual_gamepad"/>
+    <node pkg="imrt_teleop" type="imrt_teleop" name="imrt_teleop"/>
+
+</launch>

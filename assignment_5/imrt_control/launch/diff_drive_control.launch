@@ -1,0 +1,8 @@
+<launch>
+
+    <include file="$(find imrt_description)/launch/description.launch" />
+    <rosparam file="$(find imrt_control)/control/diff_drive_control.yaml" />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+    <node pkg="controller_manager" type="spawner" name="controller_spawner" args="imrt_joint_publisher imrt_velocity_controller --no-timeout" />
+</launch>
