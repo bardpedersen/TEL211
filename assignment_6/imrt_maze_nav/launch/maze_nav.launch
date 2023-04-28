@@ -1,0 +1,6 @@
+<launch>
+
+    <node name="text_to_speech" pkg="imrt_speech" type="text_to_speech.py" output="screen"/>
+    <node name="nav_node" pkg="imrt_maze_nav" type="nav_node.py" output="screen"/>
+
+</launch>
